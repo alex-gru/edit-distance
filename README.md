@@ -2,6 +2,7 @@
 Investigating approaches for computing Edit Distance of 2 strings
 - brute force (exponential) 
 - dynamic programming O(m*n) time+space
+- dynamic programming with optimized space complexity O(m) (wlog m < n)
 
 Implemented during preparation for final exam on "Similarity Search VO"
 held by Prof. Nikolaus Augsten (Database Research Group)
