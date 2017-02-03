@@ -13,7 +13,7 @@ import java.util.HashMap;
 * Investigating approaches for computing Edit Distance of 2 strings
 * - brute force (exponential) 
 * - dynamic programming O(m*n) time+space
-*
+*	- dynamic programming with optimized space complexity O(m) (wlog m < n)
 **/
 
 public class EditDistance {
@@ -50,6 +50,14 @@ public class EditDistance {
 		time = System.currentTimeMillis() - start;
 		System.out.print("\tDistance: " + ed_bf);
 		System.out.println(", took " + time + " ms");		
+
+		// dynamic programming with space optimization
+		System.out.println("Running dynamic programming with space optimization...");
+		start = System.currentTimeMillis();
+		int ed_dyn_reduced_space = ed_dyn_reduced_space(x,y);
+		time = System.currentTimeMillis() - start;
+		System.out.print("\tDistance: " + ed_dyn_reduced_space);
+		System.out.println(", took " + time + " ms");	
 	}
 
 	public static int ed_bf(String x, String y) {
@@ -109,6 +117,34 @@ public class EditDistance {
 			}
 		}
 		return array[m-1][n-1];
+	}
+
+	public static int ed_dyn_reduced_space(String x, String y) {
+		int m = x.length();
+		int n = y.length();
+		int c = 0;
+		int[] col0 = new int[m+1];
+		int[] col1 = new int[m+1];
+
+		for (int i = 0; i < m; i++) col0[i] = i;
+
+		for (int j = 1; j < n; j++) {
+			col1[0] = j;
+			for (int i = 1; i < m; i++) {
+				if (x.charAt(i) == y.charAt(j)) c = 0; else c = 1;
+
+				col1[i] = Math.min(
+					Math.min(
+						col0[i] + 1,
+						col1[i-1] + 1),
+					col0[i-1] + c
+					);
+			}
+			col0 = col1;
+			col1 = new int[m+1];
+		}
+
+		return col0[m-1];
 	}
 
 }
