@@ -30,34 +30,43 @@ public class EditDistance {
 		String x = args[0];
 		String y = args[1];
 
-		System.out.print("Computing Edit Distance (Levenshtein) of: ");
-		System.out.print("'" + x + "',");		
-		System.out.println("'" + y + "'");
+		int norm = Math.max(x.length(),y.length());
+
+		System.out.println("Computing Edit Distance (Levenshtein) of: ");
+		System.out.println("x: '" + x + "'");		
+		System.out.println("y: '" + y + "'");
+		System.out.println();
 
 		// brute force
-		System.out.println("Running brute force without caching...");
+		System.out.println("[Brute force w/o caching...]");
 		long start = System.currentTimeMillis();
 		int ed_bf = ed_bf(x,y);
 		float time = System.currentTimeMillis() - start;
 		System.out.print("\tDistance: " + ed_bf);
-		System.out.print(", took " + time + " ms");
+		System.out.print(" (normalized: " + ((float)ed_bf)/norm + ")\n");
+		System.out.print("\ttook " + time + " ms");
 		System.out.println(" (" + recursions + " recursions)");
+		System.out.println();
 
 		// dynamic programming
-		System.out.println("Running dynamic programming...");
+		System.out.println("[Dynamic programming...]");
 		start = System.currentTimeMillis();
 		int ed_dyn = ed_dyn(x,y);
 		time = System.currentTimeMillis() - start;
 		System.out.print("\tDistance: " + ed_dyn);
-		System.out.println(", took " + time + " ms");		
+		System.out.print(" (normalized: " + ((float)ed_dyn)/norm + ")\n");
+		System.out.println("\ttook " + time + " ms");		
+		System.out.println();
 
 		// dynamic programming with space optimization
-		System.out.println("Running dynamic programming with space optimization...");
+		System.out.println("[Dynamic programming with space optimization...]");
 		start = System.currentTimeMillis();
 		int ed_dyn_reduced_space = ed_dyn_reduced_space(x,y);
 		time = System.currentTimeMillis() - start;
 		System.out.print("\tDistance: " + ed_dyn_reduced_space);
-		System.out.println(", took " + time + " ms");	
+		System.out.print(" (normalized: " + ((float)ed_dyn_reduced_space)/norm + ")\n");
+		System.out.println("\ttook " + time + " ms");	
+		System.out.println();
 	}
 
 	public static int ed_bf(String x, String y) {
