@@ -48,7 +48,7 @@ public class EditDistance {
 		start = System.currentTimeMillis();
 		int ed_dyn = ed_dyn(x,y);
 		time = System.currentTimeMillis() - start;
-		System.out.print("\tDistance: " + ed_bf);
+		System.out.print("\tDistance: " + ed_dyn);
 		System.out.println(", took " + time + " ms");		
 
 		// dynamic programming with space optimization
@@ -93,12 +93,12 @@ public class EditDistance {
 		int c = 0;
 		int[][] array = new int[m+1][n+1];
 
-		for (int i = 0; i < m; i++) array[i][0] = i;
-		for (int j = 1; j < n; j++) array[0][j] = j;
+		for (int i = 0; i <= m; i++) array[i][0] = i;
+		for (int j = 1; j <= n; j++) array[0][j] = j;
 
-		for (int j = 1; j < n; j++) {
-			for (int i = 1; i < m; i++) {
-				if (x.charAt(i) == y.charAt(j)) c = 0; else c = 1;
+		for (int j = 1; j <= n; j++) {
+			for (int i = 1; i <= m; i++) {
+				if (x.charAt(i-1) == y.charAt(j-1)) c = 0; else c = 1;
 
 				array[i][j] = Math.min(
 					Math.min(
@@ -116,7 +116,7 @@ public class EditDistance {
 				}
 			}
 		}
-		return array[m-1][n-1];
+		return array[m][n];
 	}
 
 	public static int ed_dyn_reduced_space(String x, String y) {
@@ -126,12 +126,12 @@ public class EditDistance {
 		int[] col0 = new int[m+1];
 		int[] col1 = new int[m+1];
 
-		for (int i = 0; i < m; i++) col0[i] = i;
+		for (int i = 0; i <= m; i++) col0[i] = i;
 
-		for (int j = 1; j < n; j++) {
+		for (int j = 1; j <= n; j++) {
 			col1[0] = j;
-			for (int i = 1; i < m; i++) {
-				if (x.charAt(i) == y.charAt(j)) c = 0; else c = 1;
+			for (int i = 1; i <= m; i++) {
+				if (x.charAt(i-1) == y.charAt(j-1)) c = 0; else c = 1;
 
 				col1[i] = Math.min(
 					Math.min(
@@ -143,8 +143,7 @@ public class EditDistance {
 			col0 = col1;
 			col1 = new int[m+1];
 		}
-
-		return col0[m-1];
+		return col0[m];
 	}
 
 }
